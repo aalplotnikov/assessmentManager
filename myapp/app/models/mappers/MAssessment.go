@@ -282,6 +282,28 @@ func (m *MAssessment) Update(adbt *AssessmentDBType) (err error) {
 	return
 }
 
+func (m *MAssessment) UpdateStatus(id int64, status int64) (err error) {
+	query := `Update t_assessment
+	set
+		fk_status = $2
+	where pk_id = $1
+	`
+
+	_, err = m.db.Exec(query,
+		id,
+		status,
+	)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			err = nil
+			return
+		}
+		revel.AppLog.Errorf("MAssessment.Update : m.db.Exec, %s\n", err)
+		return
+	}
+	return
+}
+
 func (m *MAssessment) Delete(adbt *AssessmentDBType) (err error) {
 	query := `DELETE FROM t_assessment WHERE pk_id = $1;`
 	_, err = m.db.Exec(query, adbt.Pk_id)

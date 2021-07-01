@@ -1,6 +1,6 @@
 export default function changeEmployeeListView() {
     return {
-        view:"window", 
+        view: "window",
         id: "windowEmployeeInAssessment",
         position: 'center',
         width: 800,
@@ -11,41 +11,48 @@ export default function changeEmployeeListView() {
             view: 'template',
             height: 50,
             id: 'assesasmentEmployeeWindowLabel',
-            template: "headText",
-            css: 'webix_template',
-            align:"center",
+            template: "Выбор сотрудников",
         },
-        body:{
+        body: {
             rows: [
-                {    
-                    view:"datatable",
+                {
+                    view: "datatable",
                     id: "assessmentEmployeeDatatable",
-                    editable:true,
-                    select:"row",
-                    multiselect:true,
-                    columns:[
-                        { id:"firstNameEmployee",  header:"Имя",       fillspace: true,},
-                        { id:"lastNameEmployee",   header:"Фамилия",   fillspace: true,},
-                        { id:"middleNameEmployee", header:"Отчество",  fillspace: true,},
-                        { id:"mailEmployee",       header:"Почта",     fillspace: true,},
-                        { id:"positionEmployee",   header:"Должность", fillspace: true,},
-                        { 
-                            id:"roleEmployee",
-                            header:"Роль",
-                            // fillspace: true,
+                    editable: true,
+                    select: "row",
+                    multiselect: true,
+                    columns: [
+                        { id: "firstNameEmployee", header: "Имя", fillspace: true, },
+                        { id: "lastNameEmployee", header: "Фамилия", fillspace: true, },
+                        { id: "middleNameEmployee", header: "Отчество", fillspace: true, },
+                        { id: "mailEmployee", header: "Почта", fillspace: true, },
+                        { id: "positionEmployee", header: "Должность", fillspace: true, },
+                        {
+                            id: "roleEmployee",
+                            header: "Роль",
                             width: 150,
-                            editor:"richselect",
-                            options:["Интервьюер", "Член комиссии"],
+                            editor: "richselect",
+                            value: 2,
+                            options: [
+                                {
+                                    id: "Интервьюер",
+                                    value: "Интервьюер"
+                                },
+                                {
+                                    id: "Член комиссии",
+                                    value: "Член комиссии"
+                                }
+                            ],
                         },
                     ],
                     data: []
                 },
                 {
                     cols: [
-                        { view: 'button', id: 'cancelEmployeeChange',  value: 'Отмена',    height: 50,},
-                        { view: 'button', id: 'confirmEmployeeChange', value: 'Применить', height: 50,},
+                        { view: 'button', id: 'cancelEmployeeChange', value: 'Отмена', height: 50, },
+                        { view: 'button', id: 'confirmEmployeeChange', value: 'Применить', height: 50, },
                     ]
-                },    
+                },
             ]
             ,
         }

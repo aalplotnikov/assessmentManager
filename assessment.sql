@@ -128,4 +128,4 @@ VALUES (1, 'Иван', 'Иван','Иван', '89992228912', 'email@email.email'
 
 
 insert into toc_assessment_employees (fk_assessment, fk_employee, fk_role) VALUES (1, 10, 1);
-insert into toc_assessment_employees (fk_assessment, fk_employee, fk_role) VALUES (1, 11, 2);
+insert into toc_assessment_employees (fk_assessment, fk_employee, fk_role) VALUES (1, 11, 2);/

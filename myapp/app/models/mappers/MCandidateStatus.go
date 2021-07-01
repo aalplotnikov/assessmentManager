@@ -15,7 +15,7 @@ func (m *MCandidateStatus) Init(db *sql.DB) {
 	m.db = db
 }
 
-func (m *MCandidateStatus) StatusById(id int64) (status entities.CandidateStatus, err error) {
+func (m *MCandidateStatus) StatusById(id int64, fk_candidate int64) (status entities.CandidateStatus, err error) {
 	var (
 		query string
 		row   *sql.Row
@@ -24,9 +24,9 @@ func (m *MCandidateStatus) StatusById(id int64) (status entities.CandidateStatus
 	query = `Select
 	ref_status_candidate.c_name
 	from ref_status_candidate left join toc_assessment_candidates on ref_status_candidate.pk_id = toc_assessment_candidates.fk_status
-	where fk_assessment = $1
+	where fk_assessment = $1 and toc_assessment_candidates.fk_candidate = $2
 	`
-	row = m.db.QueryRow(query, id)
+	row = m.db.QueryRow(query, id, fk_candidate)
 
 	err = row.Scan(&status)
 	if err != nil {

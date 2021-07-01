@@ -42,7 +42,7 @@ export class CStartAssessment {
         this.view.btns.confirm.attachEvent('onItemClick', () => {
             // проверка на пустые ячейки
             for (const key in this.view.datatable.data.pull) {
-                if(this.view.datatable.data.pull[key].ofsetCandidate === undefined ||
+                if (this.view.datatable.data.pull[key].ofsetCandidate === undefined ||
                     this.view.datatable.data.pull[key].statusCandidate === undefined) {
                     webix.message('Вы не заполнили все поля');
                     return
@@ -51,11 +51,10 @@ export class CStartAssessment {
                     candidateModel.updateCandidate(this.view.datatable.data.pull[key]);
                 }
             }
-            this.hide();
             this.assessment = this.view.datatableAssessment.getSelectedItem();
             this.assessment.statusAssessment = 'Завершен'
-            assessmentModel.updateAssessment(this.assessment);
-            this.view.datatableAssessment.refreshTable();
+            assessmentModel.updateStatus(this.assessment.id, this.assessment);
+            this.hide();
         });
         // событие на кнопку закрыть ассессмент
         this.view.btns.cancel.attachEvent("onItemClick", () => {
@@ -64,14 +63,14 @@ export class CStartAssessment {
         // собыытие эдитора когда произошло изменение
         this.view.datatable.attachEvent("onAfterEditStop", (state, editor, ignoreUpdate) => {
             // заполняем автоматически когда человек не явился статусом не успешен
-            if (state.value === 'Не явился'){
+            if (state.value === 'Не явился') {
                 const row = this.view.datatable.getItem(this.view.datatable.getSelectedId().row);
                 row.ofsetCandidate = "Не успешен";
                 this.view.datatable.updateItem(this.view.datatable.getSelectedId().row, row);
             }
             // проверяем все поля если все изменяем статус
             for (const key in this.view.datatable.data.pull) {
-                if(!(this.view.datatable.data.pull[key].statusCandidate === 'Не явился' ||
+                if (!(this.view.datatable.data.pull[key].statusCandidate === 'Не явился' ||
                     this.view.datatable.data.pull[key].statusCandidate === 'Явился')) {
                     return
                 }
@@ -79,21 +78,21 @@ export class CStartAssessment {
 
             this.assessment = this.view.datatableAssessment.getSelectedItem();
             this.assessment.statusAssessment = 'В ожидании оценки'
-            assessmentModel.updateAssessment(this.assessment);
+            assessmentModel.updateStatus(this.assessment.id, this.assessment);
             this.view.statusAssessment.setHTML('В ожидании оценки');
         });
         // обработка смены выбраного кандидата для отображения заметок по кандидату
         this.view.datatable.attachEvent("onSelectChange", () => {
             this.view.spacer.hide();
             this.view.text.show();
-            if(this.view.datatable.getSelectedItem() !== undefined) {
+            if (this.view.datatable.getSelectedItem() !== undefined) {
                 candidateModel.getCandidateByID(this.view.datatable.getSelectedItem()?.id).then((candidate) => {
                     this.view.text.setValue(candidate.note);
                 })
-            }   
+            }
             if (!this.view.datatable.getSelectedItem()) {
                 this.view.spacer.show();
-                this.view.text.hide(); 
+                this.view.text.hide();
                 return;
             }
         })

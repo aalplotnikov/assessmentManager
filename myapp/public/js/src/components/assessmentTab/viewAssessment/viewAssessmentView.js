@@ -3,13 +3,13 @@ export default function viewAssessmentView() {
         view: 'window',
         id: 'windowViewAssessment',
         position: 'center',
-        fullscreen:true,
+        fullscreen: true,
         head: {
             view: 'template',
             id: 'windowLabelViewAssessment',
             template: 'Название и дата ассессмента',
             height: 40,
-            css: { 
+            css: {
                 'text-align': 'center',
                 'line-height': '25px'
             },
@@ -23,7 +23,7 @@ export default function viewAssessmentView() {
                             id: 'labelEmployeeTable',
                             template: 'Список сотрудников',
                             height: 30,
-                            css: { 
+                            css: {
                                 'text-align': 'center',
                                 'line-height': '25px'
                             },
@@ -31,18 +31,19 @@ export default function viewAssessmentView() {
                         {
                             view: 'datatable',
                             id: 'viewDatatableEmployee',
-                            select:"row",
-                            columns:[
-                                { id:"firstNameEmployee",  header:"Имя",            fillspace: true,},
-                                { id:"lastNameEmployee",   header:"Фамилия",        fillspace: true,},
-                                { id:"middleNameEmployee", header:"Отчество",       fillspace: true,},
-                                { id:"mailEmployee",       header:"Почта",          fillspace: true,},
-                                { id:"phoneEmployee",      header:"Номер телефона", fillspace: true,},
-                                { id:"positionEmployee",   header:"Должность",      fillspace: true,}
+                            select: "row",
+                            columns: [
+                                { id: "firstNameEmployee", header: "Имя", fillspace: true, },
+                                { id: "lastNameEmployee", header: "Фамилия", fillspace: true, },
+                                { id: "middleNameEmployee", header: "Отчество", fillspace: true, },
+                                { id: "mailEmployee", header: "Почта", fillspace: true, },
+                                { id: "phoneEmployee", header: "Номер телефона", fillspace: true, },
+                                { id: "positionEmployee", header: "Должность", fillspace: true, },
+                                { id: "roleEmployee", header: "роль сотрудника", fillspace: true, }
                             ],
                             data: []
                         },
-                        
+
                     ]
                 },
                 {
@@ -55,7 +56,7 @@ export default function viewAssessmentView() {
                                     id: 'labelCandidateTable',
                                     template: 'Список кандидатов',
                                     height: 30,
-                                    css: { 
+                                    css: {
                                         'text-align': 'center',
                                         'line-height': '25px'
                                     },
@@ -63,16 +64,16 @@ export default function viewAssessmentView() {
                                 {
                                     view: 'datatable',
                                     id: 'viewDatatableCandidate',
-                                    select:"row",
-                                    columns:[
-                                        { id:"firstNameCandidate",  header:"Имя",            fillspace: true,},
-                                        { id:"lastNameCandidate",   header:"Фамилия",        fillspace: true,},
-                                        { id:"middleNameCandidate", header:"Отчество",       fillspace: true,},
-                                        { id:"mailCandidate",       header:"Почта",          fillspace: true,},
-                                        { id:"phoneCandidate",      header:"Номер телефона", fillspace: true,},
-                                        { id:"StatusCandidate",     header:"Статус",         fillspace: true,}
+                                    select: "row",
+                                    columns: [
+                                        { id: "firstNameCandidate", header: "Имя", fillspace: true, },
+                                        { id: "lastNameCandidate", header: "Фамилия", fillspace: true, },
+                                        { id: "middleNameCandidate", header: "Отчество", fillspace: true, },
+                                        { id: "mailCandidate", header: "Почта", fillspace: true, },
+                                        { id: "phoneCandidate", header: "Номер телефона", fillspace: true, },
+                                        { id: "StatusCandidate", header: "Статус", fillspace: true, }
                                     ],
-                                    data: []                    
+                                    data: []
                                 },
                             ]
                         },
@@ -84,7 +85,7 @@ export default function viewAssessmentView() {
                                     id: 'labelNoteView',
                                     template: 'Заметки',
                                     height: 50,
-                                    css: { 
+                                    css: {
                                         'text-align': 'center',
                                         'line-height': '45px'
                                     },
@@ -93,7 +94,7 @@ export default function viewAssessmentView() {
                                     view: 'template',
                                     id: 'spacerview',
                                     template: 'Выберите сотрудника чтобы оставить заметку',
-                                    css: { 
+                                    css: {
                                         'text-align': 'center',
                                     },
                                 },

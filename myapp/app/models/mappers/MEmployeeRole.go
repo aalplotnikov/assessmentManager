@@ -15,18 +15,18 @@ func (m *MEmployeeRole) Init(db *sql.DB) {
 	m.db = db
 }
 
-func (m *MEmployeeRole) RoleById(id int64) (status entities.EmplojeeRole, err error) {
+func (m *MEmployeeRole) RoleById(id int64, fk_employee int64) (status entities.EmplojeeRole, err error) {
 	var (
 		query string
 		row   *sql.Row
 	)
 
 	query = `Select
-		c_name
-		from ref_role
-		where pk_id = $1
+	ref_role.c_name
+	from ref_role left join toc_assessment_employees on ref_role.pk_id = toc_assessment_employees.fk_role
+	where fk_assessment = $1 and toc_assessment_employees.fk_employee = $2
 	`
-	row = m.db.QueryRow(query, id)
+	row = m.db.QueryRow(query, id, fk_employee)
 
 	err = row.Scan(&status)
 	if err != nil {
@@ -46,9 +46,9 @@ func (m *MEmployeeRole) IdByRole(status entities.EmplojeeRole) (id int64, err er
 	)
 
 	query = `Select
-	ref_role.c_name
-	from ref_role left join toc_assessment_employees on ref_role.pk_id = toc_assessment_employees.fk_role
-	where fk_assessment = $1
+		pk_id
+	from ref_role
+	where c_name = $1
 	`
 
 	row = m.db.QueryRow(query, status)

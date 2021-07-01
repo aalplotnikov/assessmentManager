@@ -100,7 +100,7 @@ func (p *PAssessment) GetAssessments() (assessment []*entities.Assessment, err e
 				revel.AppLog.Errorf("PAssessment.GetAssessments : cdbt.ToType, %s\n", err)
 				continue
 			}
-			c.Status, err = p.candidateStatusMapper.StatusById(adbt.Pk_id)
+			c.Status, err = p.candidateStatusMapper.StatusById(adbt.Pk_id, cdbt.Pk_id)
 			if err != nil {
 				revel.AppLog.Errorf("PAssessment.GetAssessments : p.candidateStatusMapper.StatusById, %s\n", err)
 				continue
@@ -124,7 +124,7 @@ func (p *PAssessment) GetAssessments() (assessment []*entities.Assessment, err e
 				revel.AppLog.Errorf("PAssessment.GetAssessments : p.positionsMapper.PositionNameByID, %s\n", err)
 				continue
 			}
-			e.Role, err = p.employeeRoleMapper.RoleById(adbt.Pk_id)
+			e.Role, err = p.employeeRoleMapper.RoleById(adbt.Pk_id, edbt.Pk_id)
 			if err != nil {
 				revel.AppLog.Errorf("PAssessment.GetAssessments : p.candidateStatusMapper.RoleById, %s\n", err)
 				continue
@@ -177,7 +177,7 @@ func (p *PAssessment) GetAssessmentByid(id int64) (assessment *entities.Assessme
 			revel.AppLog.Errorf("PAssessment.GetAssessmentByid : cdbt.ToType, %s\n", err)
 			continue
 		}
-		c.Status, err = p.candidateStatusMapper.StatusById(adbt.Pk_id)
+		c.Status, err = p.candidateStatusMapper.StatusById(adbt.Pk_id, cdbt.Pk_id)
 		if err != nil {
 			revel.AppLog.Errorf("PAssessment.GetAssessmentByid : p.candidateStatusMapper.StatusById, %s\n", err)
 			continue
@@ -201,20 +201,26 @@ func (p *PAssessment) GetAssessmentByid(id int64) (assessment *entities.Assessme
 			revel.AppLog.Errorf("PAssessment.GetAssessmentByid : p.positionsMapper.PositionNameByID, %s\n", err)
 			continue
 		}
-		e.Role, err = p.employeeRoleMapper.RoleById(adbt.Pk_id)
+		e.Role, err = p.employeeRoleMapper.RoleById(adbt.Pk_id, edbt.Pk_id)
 		if err != nil {
 			revel.AppLog.Errorf("PAssessment.GetAssessmentByid : p.candidateStatusMapper.RoleById, %s\n", err)
 			continue
 		}
 
 		assessment.Employee = append(assessment.Employee, e)
+		fmt.Println("wwww")
+		fmt.Println("wwww")
+		fmt.Println(e)
 	}
 
 	return
 }
 
 func (p *PAssessment) CreateAssessment(assessment *entities.Assessment) (a *entities.Assessment, err error) {
-	var adbt *mappers.AssessmentDBType
+	var (
+		adbt   *mappers.AssessmentDBType
+		roleID int64
+	)
 	adbt, err = adbt.FromType(*assessment)
 	if err != nil {
 		revel.AppLog.Errorf("PAssessment.CreateAssessment : adbt.FromType, %s\n", err)
@@ -245,7 +251,12 @@ func (p *PAssessment) CreateAssessment(assessment *entities.Assessment) (a *enti
 
 	if len(assessment.Employee) != 0 {
 		for _, employee := range assessment.Employee {
-			_, err = p.assessmentEmployeeMapper.Insert(assessment.ID, employee.ID, 1)
+			roleID, err = p.employeeRoleMapper.IdByRole(employee.Role)
+			if err != nil {
+				revel.AppLog.Errorf("PAssessment.CreateAssessment : p.employeeRoleMapper.IdByRole, %s\n", err)
+				return
+			}
+			_, err = p.assessmentEmployeeMapper.Insert(assessment.ID, employee.ID, roleID)
 			if err != nil {
 				revel.AppLog.Errorf("PAssessment.CreateAssessment : p.assessmentEmployeeMapper.Insert, %s\n", err)
 				return
@@ -258,8 +269,8 @@ func (p *PAssessment) CreateAssessment(assessment *entities.Assessment) (a *enti
 
 func (p *PAssessment) UpdateAssessment(assessment *entities.Assessment) (a *entities.Assessment, err error) {
 	var (
-		adbt    *mappers.AssessmentDBType
-		fk_role int64
+		adbt   *mappers.AssessmentDBType
+		roleID int64
 	)
 	adbt, err = adbt.FromType(*assessment)
 	if err != nil {
@@ -303,13 +314,12 @@ func (p *PAssessment) UpdateAssessment(assessment *entities.Assessment) (a *enti
 
 	if len(assessment.Employee) != 0 {
 		for _, employee := range assessment.Employee {
-			fk_role, err = p.assessmentEmployeeMapper.IDByRoleName(string(employee.Role))
-			fmt.Println("aaaaaaaaaaa")
-			fmt.Println("aaaaaaaaaaa")
-			fmt.Println("aaaaaaaaaaa")
-			fmt.Println("aaaaaaaaaaa")
-			fmt.Println(employee.Role)
-			_, err = p.assessmentEmployeeMapper.Insert(assessment.ID, employee.ID, fk_role)
+			roleID, err = p.employeeRoleMapper.IdByRole(employee.Role)
+			if err != nil {
+				revel.AppLog.Errorf("PAssessment.CreateAssessment : p.employeeRoleMapper.IdByRole, %s\n", err)
+				return
+			}
+			_, err = p.assessmentEmployeeMapper.Insert(assessment.ID, employee.ID, roleID)
 			if err != nil {
 				revel.AppLog.Errorf("PAssessment.CreateAssessment : p.assessmentEmployeeMapper.Insert, %s\n", err)
 				return
@@ -330,6 +340,21 @@ func (p *PAssessment) DeleteAssessment(assessment *entities.Assessment) (err err
 	err = p.assessmentMapper.Delete(adbt)
 	if err != nil {
 		revel.AppLog.Errorf("PAssessment.UpdateAssessment : p.assessmentStatusMapper.Delete, %s\n", err)
+		return
+	}
+	return
+}
+
+func (p *PAssessment) UpdateStatus(id int64, assessment *entities.Assessment) (err error) {
+	var Fk_status int64
+	Fk_status, err = p.assessmentStatusMapper.IdByStatus(assessment.Status)
+	if err != nil {
+		revel.AppLog.Errorf("PAssessment.UpdateStatus : p.assessmentStatusMapper.IdByStatus, %s\n", err)
+		return
+	}
+	err = p.assessmentMapper.UpdateStatus(id, Fk_status)
+	if err != nil {
+		revel.AppLog.Errorf("PAssessment.UpdateStatus : p.assessmentMapper.UpdateStatus, %s\n", err)
 		return
 	}
 	return

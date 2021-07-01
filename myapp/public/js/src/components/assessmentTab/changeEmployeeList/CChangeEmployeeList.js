@@ -13,26 +13,26 @@ export class CChangeEmployeeList {
 
     attachEvents() {
         this.view = {
-            window:  $$('windowEmployeeInAssessment'),
+            window: $$('windowEmployeeInAssessment'),
             datatable: $$('assessmentEmployeeDatatable'),
             datatableAssessment: $$('assessmentTabDatatable'),
             btns: {
                 cancel: $$('cancelEmployeeChange'),
-                confirm: $$ ('confirmEmployeeChange'),
+                confirm: $$('confirmEmployeeChange'),
             },
         };
 
         this.view.btns.cancel.attachEvent('onItemClick', () => {
             this.refreshTable();
             this.view.datatable.clearSelection();
-            if(this.view.datatableAssessment.getSelectedItem() !== undefined) {
+            if (this.view.datatableAssessment.getSelectedItem() !== undefined) {
                 assessmentModel.getAssessmentByID(this.view.datatableAssessment.getSelectedItem()?.id).then((assessment) => {
-                    if(Array.isArray(assessment.employeeList)) {
+                    if (Array.isArray(assessment.employeeList)) {
                         for (const iterator of assessment.employeeList) {
                             this.view.datatable.select(iterator.id, true);
-                        } 
-                    }   else if (assessment.employeeList?.id !== undefined) {
-                            this.view.datatable.select(assessment.employeeList?.id);
+                        }
+                    } else if (assessment.employeeList?.id !== undefined) {
+                        this.view.datatable.select(assessment.employeeList?.id);
                     }
                 });
             }
@@ -40,6 +40,17 @@ export class CChangeEmployeeList {
         });
 
         this.view.btns.confirm.attachEvent('onItemClick', () => {
+            if (Array.isArray(this.view.datatable.getSelectedItem())) {
+                for (const iterator of this.view.datatable.getSelectedItem()) {
+                    if (iterator.roleEmployee === "") {
+                        webix.message('Вы не заполнили роли у выбранных сотрудников');
+                        return
+                    }
+                }
+            } else if (this.view.datatable.getSelectedItem().roleEmployee === "") {
+                webix.message('Вы не заполнили роли у выбранных сотрудников');
+                return
+            }
             this.hide();
         });
     }

@@ -106,6 +106,26 @@ func (c *CAssessment) Update() revel.Result {
 	return c.RenderJSON(Succes(assessment))
 }
 
+func (c *CAssessment) Status(id int64) revel.Result {
+	var (
+		assessment *entities.Assessment
+		err        error
+	)
+	assessment, err = c.fetchPostAssessment()
+	if err != nil {
+		revel.AppLog.Errorf("CAssessment.Create : c.fetchPostAssessment, %s\n", err)
+		return c.RenderJSON(Failed(err.Error()))
+	}
+
+	err = c.provider.UpdateStatus(id, assessment)
+	if err != nil {
+		revel.AppLog.Errorf("CAssessment.Status : c.provider.UpdateStatus, %s\n", err)
+		return c.RenderJSON(Failed(err.Error()))
+	}
+	revel.AppLog.Debugf("CAssessment.Status : c.provider.UpdateStatus, assessment: %+v\n", assessment)
+	return c.RenderJSON(Succes(assessment))
+}
+
 func (c *CAssessment) Delete() revel.Result {
 	var (
 		assessment *entities.Assessment

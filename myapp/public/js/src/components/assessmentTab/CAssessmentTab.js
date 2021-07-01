@@ -13,12 +13,12 @@ export class CAssesmentTab {
         this.windowView
     }
 
-    init (){
+    init() {
         this.window = new CAssessmentWindow();
         this.windowStart = new CStartAssessment();
         this.windowView = new CViewAssessment();
         this.refreshTable();
-        this.window.init( () => {
+        this.window.init(() => {
             this.refreshTable()
         });
     }
@@ -30,7 +30,7 @@ export class CAssesmentTab {
             startWindow: $$('windowStartAssessment'),
             btns: {
                 viewAssessmentbtn: $$('viewAssessment'),
-                startBtn:  $$('startAssessment'),
+                startBtn: $$('startAssessment'),
                 createBtn: $$('addAssessment'),
                 updateBtn: $$('editAssessment'),
                 deleteBtn: $$('deleteAssessment'),
@@ -40,7 +40,12 @@ export class CAssesmentTab {
         this.window.attachEvents();
         this.windowStart.attachEvents();
         this.windowView.attachEvents();
-        
+
+        this.view.startWindow.attachEvent('onHide', () => {
+            console.log("sssss")
+            this.refreshTable();
+        })
+
         // обработчик события кнопки посмотреть ассессмент
         this.view.btns.viewAssessmentbtn.attachEvent('onItemClick', () => {
             this.viewAssessment();
@@ -57,7 +62,7 @@ export class CAssesmentTab {
         //  обработчик событий кнопки изменить
         this.view.btns.updateBtn.attachEvent("onItemClick", () => {
             this.updateAssessment();
-          });
+        });
         // обработчик событий кнопки удалить
         this.view.btns.deleteBtn.attachEvent("onItemClick", () => {
             this.deleteAssessment();
@@ -85,31 +90,31 @@ export class CAssesmentTab {
                 // заполнение таблицы окна ассессментами
                 this.view.datatable.clearAll() // очишение таблицы
                 if (Array.isArray(assessment)) {
-                for (const iterator of assessment) {
-                    this.Assessment = new Assessment(
-                        iterator.id,
-                        iterator.nameAssessment,
-                        iterator.candidateList,
-                        iterator.employeeList,
-                        iterator.dateAssessment,
-                        iterator.statusAssessment
+                    for (const iterator of assessment) {
+                        this.Assessment = new Assessment(
+                            iterator.id,
+                            iterator.nameAssessment,
+                            iterator.candidateList,
+                            iterator.employeeList,
+                            iterator.dateAssessment,
+                            iterator.statusAssessment
                         )
                         this.view.datatable.parse(this.Assessment)
                     }
                 } else {
                     this.Assessment = new Assessment(
-                    assessment.id,
-                    assessment.nameAssessment,
-                    assessment.candidateList,
-                    assessment.employeeList,
-                    assessment.dateAssessment,
-                    assessment.statusAssessment
+                        assessment.id,
+                        assessment.nameAssessment,
+                        assessment.candidateList,
+                        assessment.employeeList,
+                        assessment.dateAssessment,
+                        assessment.statusAssessment
                     )
                     this.view.datatable.parse(this.Assessment)
                 }
 
-                
-                 // заполнение таблицы
+
+                // заполнение таблицы
             })
         }
     }
@@ -121,23 +126,23 @@ export class CAssesmentTab {
             webix.message('Выделите строку');
             return
         }
-        if(selected.statusAssessment === 'Завершен') {
+        if (selected.statusAssessment === 'Завершен') {
             webix.message('Ассессмент уже завершен');
             return
         } else if (selected.statusAssessment === undefined || selected.statusAssessment === 'Не заполнен') {
             webix.message('Заполните ассессмент');
             return
         } else if (selected.statusAssessment === 'Заполнен' || selected.statusAssessment === 'В ожидании оценки') {
-        this.windowStart.show();
-        this.windowStart.refreshTable();
-        $$('StartNoteTextAssessment').hide();
-        $$('textTemplate').show();
+            this.windowStart.show();
+            this.windowStart.refreshTable();
+            $$('StartNoteTextAssessment').hide();
+            $$('textTemplate').show();
         }
     }
-// метод открытия просмотра ассессмента
+    // метод открытия просмотра ассессмента
     viewAssessment() {
         let selected = this.view.datatable.getSelectedItem();
-        if(!selected) {
+        if (!selected) {
             webix.message('Выделите строку');
             return
         }

@@ -27,16 +27,6 @@ class AssessmentModel extends Model {
         return this.get(`assessment/${id}`);
     }
 
-    getRole(role) {
-        return []
-        return this.get(`assessment/${role}`)
-    }
-
-    getStatusCandidate(candidateStatus) {
-        return []
-        return  this.get(`assessment/${candidateStatus}`)
-    }
-
     createAssessment(assessment) {
         return this.post('assessments/create', assessment);
     }
@@ -49,7 +39,11 @@ class AssessmentModel extends Model {
         return this.post('assessments/delete', assessment);
     }
 
+    updateStatus(id, status) {
+        return this.post(`/assessments/${id}/status`, status)
+    }
+
 }
 
-const assessmentModel  = new AssessmentModel();
+const assessmentModel = new AssessmentModel();
 export default assessmentModel

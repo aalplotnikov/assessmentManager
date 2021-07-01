@@ -2,7 +2,6 @@ package mappers
 
 import (
 	"database/sql"
-	"myapp/app/models/entities"
 
 	"github.com/revel/revel"
 )
@@ -15,7 +14,7 @@ func (m *MAssessmentStatus) Init(db *sql.DB) {
 	m.db = db
 }
 
-func (m *MAssessmentStatus) StatusById(id int64) (status entities.AssessmentStatus, err error) {
+func (m *MAssessmentStatus) StatusById(id int64) (status string, err error) {
 	var (
 		query string
 		row   *sql.Row
@@ -39,7 +38,7 @@ func (m *MAssessmentStatus) StatusById(id int64) (status entities.AssessmentStat
 	return
 }
 
-func (m *MAssessmentStatus) IdByStatus(status entities.AssessmentStatus) (id int64, err error) {
+func (m *MAssessmentStatus) IdByStatus(status string) (id int64, err error) {
 	var (
 		query string
 		row   *sql.Row
