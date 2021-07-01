@@ -269,8 +269,9 @@ func (p *PAssessment) CreateAssessment(assessment *entities.Assessment) (a *enti
 
 func (p *PAssessment) UpdateAssessment(assessment *entities.Assessment) (a *entities.Assessment, err error) {
 	var (
-		adbt   *mappers.AssessmentDBType
-		roleID int64
+		adbt     *mappers.AssessmentDBType
+		roleID   int64
+		statusID int64
 	)
 	adbt, err = adbt.FromType(*assessment)
 	if err != nil {
@@ -298,7 +299,12 @@ func (p *PAssessment) UpdateAssessment(assessment *entities.Assessment) (a *enti
 
 	if len(assessment.Candidate) != 0 {
 		for _, candidate := range assessment.Candidate {
-			_, err = p.assessmentCandidateMapper.Insert(assessment.ID, candidate.ID, 1)
+			statusID, err = p.candidateStatusMapper.IdByStatus(candidate.Status)
+			if err != nil {
+				revel.AppLog.Errorf("PAssessment.CreateAssessment : p.employeeRoleMapper.IdByRole, %s\n", err)
+				return
+			}
+			_, err = p.assessmentCandidateMapper.Insert(assessment.ID, candidate.ID, statusID)
 			if err != nil {
 				revel.AppLog.Errorf("PAssessment.CreateAssessment : p.assessmentCandidateMapper.Insert, %s\n", err)
 				return

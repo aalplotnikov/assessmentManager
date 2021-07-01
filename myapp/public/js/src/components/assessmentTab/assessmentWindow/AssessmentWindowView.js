@@ -1,9 +1,5 @@
 const form = [
-    //{ view:"text",       id: "id",          name:"id",          labelWidth: 175, required: true, label:"ID Ассесмента"},
     { view:"text",       id: "nameAssessment",     name:"nameAssessment",     labelWidth: 175, required: true, label:"Название ассессмента"},
-    // { view:"richselect", id: "Interviewer", name:"Interviewer", labelWidth: 175, required: true, label:"Интервьюер", value:1,
-    //     options:[]
-    // },
     { view: 'button', id: 'addСommissionInAss', value: 'Добавить сотрудников'},
     { view: 'button', id: 'addCandidateInAss',  value: 'Добавить кандидатов'},
     { 
@@ -13,6 +9,13 @@ const form = [
         labelWidth: 175,
         required: true,
         label:"Дата ассессмента",
+        suggest:{
+            type:"calendar", 
+            body:{
+                minDate:new Date(Date.now()-86400000),
+                timepicker:true,
+            },
+        },
         timepicker: true,
     },
     {
@@ -43,9 +46,7 @@ export default function assessmentWindowView() {
             id: "formAssessment",
             elements:form,
             rules:{
-                //"id": webix.rules.isNumber,
                 "nameAssessment": webix.rules.isNotEmpty,
-                // "Interviewer": webix.rules.isNotEmpty,
                 "dateAssessment": webix.rules.isNotEmpty,
             }
         }

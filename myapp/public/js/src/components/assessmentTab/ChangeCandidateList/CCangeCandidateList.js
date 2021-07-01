@@ -55,10 +55,6 @@ export class CCangeCandidateList {
         this.view.window.hide();
     }
 
-    clear() {
-
-    }
-
     refreshTable(candidate) {
         if (candidate) {
             this.view.datatable.clearAll() // очищение таблицы

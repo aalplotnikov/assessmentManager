@@ -9,8 +9,6 @@ export default function WorkedPlaceView(assesmentTab, candidateTab, employeeTab)
                   { value: 'Кандидаты',   id: 'candidateTab'},
                   ]
                   },
-                  //{ view:"label",  label: "Фамилия Имя Отчество", align:"center"},
-                  //{ view:"button", id:"logout", width:100, value:"Выход"},
                 ]
               },    
               { 

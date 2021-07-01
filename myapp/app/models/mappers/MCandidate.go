@@ -16,7 +16,6 @@ type CandidateDBType struct {
 	C_email        string
 	C_phone_number string
 	C_note         string
-	//C_birthday    *time.Time
 }
 
 func (dbt *CandidateDBType) ToType() (c *entities.Candidate, err error) {
@@ -29,7 +28,6 @@ func (dbt *CandidateDBType) ToType() (c *entities.Candidate, err error) {
 	c.Email = dbt.C_email
 	c.PhoneNumber = dbt.C_phone_number
 	c.Note = dbt.C_note
-	// c.Birthday = dbt.C_birthday
 	return
 }
 

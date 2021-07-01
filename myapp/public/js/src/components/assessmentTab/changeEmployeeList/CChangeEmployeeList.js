@@ -22,6 +22,19 @@ export class CChangeEmployeeList {
             },
         };
 
+        this.view.datatable.attachEvent("onAfterEditStop", (state, editor, ignoreUpdate) => {
+            if (state.value === 'Интервьюер') {
+                for (const key in this.view.datatable.data.pull) {
+                    if(this.view.datatable.data.pull[key].roleEmployee !== 'Интервьюер')
+                        this.view.datatable.data.pull[key].roleEmployee = "Член комиссии";
+                }
+            }
+
+            this.assessment = this.view.datatableAssessment.getSelectedItem();
+            this.assessment.statusAssessment = 'В ожидании оценки'
+            assessmentModel.updateStatus(this.assessment.id, this.assessment);
+            this.view.statusAssessment.setHTML('В ожидании оценки');
+        });
         this.view.btns.cancel.attachEvent('onItemClick', () => {
             this.refreshTable();
             this.view.datatable.clearSelection();

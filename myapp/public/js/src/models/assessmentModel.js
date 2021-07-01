@@ -12,21 +12,6 @@ class AssessmentModel extends Model {
         return this.get(`assessments/${id}`);
     }
 
-    getCandidateAssessmentById(id) {
-        return []
-        return this.get(`candidate/${id}`);
-    }
-
-    getEmployeeAssessmentById(id) {
-        return []
-        return this.get(`employee/${id}`);
-    }
-
-    getStatusAssessment(id) {
-        return []
-        return this.get(`assessment/${id}`);
-    }
-
     createAssessment(assessment) {
         return this.post('assessments/create', assessment);
     }

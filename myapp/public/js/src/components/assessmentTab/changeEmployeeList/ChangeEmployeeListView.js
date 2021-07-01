@@ -32,7 +32,6 @@ export default function changeEmployeeListView() {
                             header: "Роль",
                             width: 150,
                             editor: "richselect",
-                            value: 2,
                             options: [
                                 {
                                     id: "Интервьюер",

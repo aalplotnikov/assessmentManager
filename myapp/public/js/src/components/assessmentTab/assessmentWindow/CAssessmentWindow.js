@@ -66,9 +66,11 @@ export class CAssessmentWindow {
                 if(Array.isArray(assessment.employeeList)) {
                     for (const iterator of assessment.employeeList) {
                         this.view.dataTableEmployee.select(iterator.id, true);
+                        this.view.dataTableEmployee.data.pull[iterator.id].roleEmployee = iterator.roleEmployee
                     } 
                 }   else if (assessment.employeeList?.id !== undefined) {
                         this.view.dataTableEmployee.select(assessment.employeeList?.id);
+                        this.view.dataTableEmployee.data.pull.roleEmployee = iterator.roleEmployee
                 }
             })
         }
@@ -284,33 +286,6 @@ export class CAssessmentWindow {
     addEmployeeInAssessment() {
         this.windowEmployee.show();
     }
-    // метод обнавлениея пций селекта интервьюера 
-    // refreshOptions(employee) {
-    //     if (employee) {
-
-    //         employee.map((employee) => {
-    //             this.Interviewer.push({
-    //                 id: `${employee.firstNameEmployee} ${employee.lastNameEmployee} ${employee.middleNameEmployee}`,
-    //                 value: `${employee.firstNameEmployee} ${employee.lastNameEmployee} ${employee.middleNameEmployee}`
-    //             }); 
-    //         })
-
-    //         this.view.formfields.Interviewer.getPopup().getList().clearAll() // очищение селекта
-    //         this.view.formfields.Interviewer.getPopup().getList().parse(this.Interviewer) // заполнение селекта
-    //         return
-    //     } else {
-    //         employeeModel.getEmployees().then((employee) => {
-    //             employee.map((employee) => {
-    //                 this.Interviewer.push({
-    //                     id: `${employee.firstNameEmployee} ${employee.lastNameEmployee} ${employee.middleNameEmployee}`,
-    //                     value: `${employee.firstNameEmployee} ${employee.lastNameEmployee} ${employee.middleNameEmployee}`
-    //                 });    
-    //             });
-    //             this.view.formfields.Interviewer.getPopup().getList().clearAll() // очищение селекта
-    //             this.view.formfields.Interviewer.getPopup().getList().parse(this.Interviewer) // заполнение селекта
-    //         })
-    //     }
-    // }
 
 }
 

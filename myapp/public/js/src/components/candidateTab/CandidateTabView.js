@@ -47,12 +47,6 @@ export default function candidateTabView() {
                 fillspace: true,
                 sort: 'text',
             },
-            { 
-                id:"statusCandidate",     
-                header:["Статус", { content:"selectFilter" }],         
-                fillspace: true,
-                sort: 'text',
-            }
         ],
         data: []
     }

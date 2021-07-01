@@ -31,12 +31,6 @@ export default function assessmentTabView() {
                 fillspace: true,
                 sort:'text'
             },
-            // { 
-            //     id:"Interviewer",
-            //     header: [ "Интервьюер", { content:"selectFilter" }],
-            //     fillspace: true,
-            //     sort:'text'
-            // },
             { 
                 id:"dateAssessment",
                 header: [ "Дата проведения ассесмента", { content:"dateFilter" }],
